@@ -3,6 +3,16 @@ dist/
 coverage/
 .vite/
 .turbo/
+playground/dist*/
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# 构建产物归档（pnpm pack 输出）
+*.tgz
 
 .env
 .env.*
@@ -11,3 +21,4 @@ coverage/
 Thumbs.db
 
 *.log
+*.tsbuildinfo

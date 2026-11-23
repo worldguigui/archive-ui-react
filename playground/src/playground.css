@@ -1,0 +1,149 @@
+/*
+ * Playground 专属布局样式，统一使用 pg- 前缀，
+ * 与组件库的 au- 前缀样式严格分离，互不污染。
+ */
+body {
+  margin: 0;
+  background-color: var(--au-color-background);
+  color: var(--au-color-text);
+}
+
+.pg-app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.pg-nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--au-color-border);
+}
+
+.pg-nav__brand {
+  font-family: var(--au-font-family-heading);
+  font-size: var(--au-font-size-lg);
+  font-weight: var(--au-font-weight-bold);
+  letter-spacing: 0.06em;
+  color: var(--au-color-accent);
+}
+
+.pg-nav__list {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pg-nav__item {
+  border: 1px solid transparent;
+  background: none;
+  padding: 6px 12px;
+  font-size: var(--au-font-size-sm);
+  font-family: var(--au-font-family-body);
+  color: var(--au-color-text-muted);
+  cursor: pointer;
+  border-radius: var(--au-radius-small);
+}
+
+.pg-nav__item--active {
+  color: var(--au-color-accent);
+  border-color: var(--au-color-border);
+  background-color: var(--au-color-surface);
+}
+
+.pg-main {
+  flex: 1;
+  padding: 24px 0 48px;
+}
+
+.pg-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pg-heading {
+  font-family: var(--au-font-family-heading);
+  color: var(--au-color-text);
+  letter-spacing: 0.05em;
+}
+
+.pg-note {
+  color: var(--au-color-text-muted);
+  font-size: var(--au-font-size-sm);
+}
+
+.pg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.pg-grid--editor {
+  grid-template-columns: minmax(280px, 1fr) 2fr;
+  align-items: start;
+}
+
+.pg-toolbar {
+  display: flex;
+  gap: 12px;
+}
+
+.pg-btn {
+  border: 1px solid var(--au-color-border);
+  background-color: var(--au-color-surface);
+  color: var(--au-color-text);
+  font-family: var(--au-font-family-body);
+  padding: 6px 14px;
+  border-radius: var(--au-radius-small);
+  cursor: pointer;
+}
+
+.pg-btn:hover {
+  color: var(--au-color-accent);
+  border-color: var(--au-color-accent);
+}
+
+.pg-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--au-color-border);
+  border-radius: var(--au-radius-medium);
+  background-color: var(--au-color-surface);
+}
+
+.pg-editor__row {
+  display: grid;
+  grid-template-columns: 110px 1fr 40px;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--au-font-size-sm);
+}
+
+.pg-editor__name {
+  color: var(--au-color-text-muted);
+}
+
+.pg-editor__var {
+  font-size: var(--au-font-size-xs);
+  color: var(--au-color-text);
+}
+
+.pg-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+code {
+  font-family: Consolas, Monaco, monospace;
+}

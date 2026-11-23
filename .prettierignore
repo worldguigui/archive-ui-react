@@ -1,0 +1,8 @@
+node_modules/
+dist/
+coverage/
+playground/dist/
+test-results/
+playwright-report/
+pnpm-lock.yaml
+*.log

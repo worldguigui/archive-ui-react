@@ -1,0 +1,13 @@
+/*
+ * 基础样式。只作用于组件库自身的 class（au- 前缀），
+ * 不重置宿主项目的全局样式。
+ */
+[class^='au-'],
+[class*=' au-'] {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: var(--au-font-family-body);
+  line-height: var(--au-line-height-normal);
+  color: var(--au-color-text);
+}

@@ -1,0 +1,18 @@
+/*
+ * paper 材质：在组件表面叠加纸张纹理层。
+ * 纹理图片位于 src/assets/textures/，经 Vite 构建后进入 dist/assets/，
+ * CSS 中的 url() 引用会被构建期改写为发布后的相对路径。
+ */
+.au-material--paper {
+  position: relative;
+  background-color: var(--au-color-surface-paper);
+}
+
+.au-material--paper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('../../assets/textures/paper-grain.svg');
+  background-repeat: repeat;
+  pointer-events: none;
+}

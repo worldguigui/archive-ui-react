@@ -1,0 +1,72 @@
+.au-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--au-color-surface);
+  border: var(--au-border-width-thin) solid var(--au-color-border);
+  border-radius: var(--au-radius-medium);
+  box-shadow: var(--au-shadow-panel);
+  overflow: hidden;
+}
+
+.au-panel__header {
+  padding: var(--au-space-sm) var(--au-space-md);
+  border-bottom: var(--au-border-width-thin) solid var(--au-color-border);
+  background-color: var(--au-color-background);
+}
+
+.au-panel__title {
+  font-family: var(--au-font-family-heading);
+  font-size: var(--au-font-size-lg);
+  font-weight: var(--au-font-weight-bold);
+  line-height: var(--au-line-height-tight);
+  letter-spacing: 0.04em;
+  color: var(--au-color-accent);
+}
+
+.au-panel__content {
+  position: relative;
+  padding: var(--au-space-md);
+  flex: 1;
+}
+
+.au-panel__footer {
+  padding: var(--au-space-sm) var(--au-space-md);
+  border-top: var(--au-border-width-thin) solid var(--au-color-border);
+  font-size: var(--au-font-size-sm);
+  color: var(--au-color-text-muted);
+}
+
+/* 四角装饰：以 SVG 作为 mask，颜色随 --au-color-border 主题变量变化。 */
+.au-panel--corners .au-panel__corner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background-color: var(--au-color-border);
+  -webkit-mask: url('../../assets/ornaments/corner.svg') center / contain no-repeat;
+  mask: url('../../assets/ornaments/corner.svg') center / contain no-repeat;
+  pointer-events: none;
+}
+
+.au-panel--corners .au-panel__corner--top-left {
+  top: 4px;
+  left: 4px;
+}
+
+.au-panel--corners .au-panel__corner--top-right {
+  top: 4px;
+  right: 4px;
+  transform: scaleX(-1);
+}
+
+.au-panel--corners .au-panel__corner--bottom-left {
+  bottom: 4px;
+  left: 4px;
+  transform: scaleY(-1);
+}
+
+.au-panel--corners .au-panel__corner--bottom-right {
+  bottom: 4px;
+  right: 4px;
+  transform: scale(-1);
+}

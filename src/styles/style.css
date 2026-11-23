@@ -1,0 +1,5 @@
+/* 组件库全量样式入口，构建后输出为 dist/style.css。 */
+@import './base.css';
+@import './themes/default.css';
+@import './materials/paper.css';
+@import './components/panel.css';

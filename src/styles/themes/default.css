@@ -1,0 +1,58 @@
+/*
+ * 默认主题（仿旧纸张 / 档案卷宗气质）。
+ * 所有组件通过 CSS Variables 获取视觉属性，不硬编码主题数值。
+ * 颜色定义与 src/tokens/colors.ts 保持对应。
+ */
+:root {
+  --au-color-background: #f1eadb;
+  --au-color-surface: #f7f1e3;
+  --au-color-surface-paper: #efe6cf;
+  --au-color-text: #352d25;
+  --au-color-text-muted: #7a6f5d;
+  --au-color-border: #a99b82;
+  --au-color-accent: #8c3b2e;
+  --au-color-shadow: rgba(53, 45, 37, 0.18);
+
+  --au-font-family-body: Georgia, 'Times New Roman', 'Songti SC', 'SimSun', serif;
+  --au-font-family-heading: Georgia, 'Times New Roman', 'Songti SC', 'SimSun', serif;
+
+  --au-font-size-xs: 0.75rem;
+  --au-font-size-sm: 0.875rem;
+  --au-font-size-md: 1rem;
+  --au-font-size-lg: 1.25rem;
+  --au-font-size-xl: 1.5rem;
+
+  --au-font-weight-regular: 400;
+  --au-font-weight-bold: 700;
+
+  --au-line-height-tight: 1.3;
+  --au-line-height-normal: 1.6;
+
+  --au-space-xs: 0.25rem;
+  --au-space-sm: 0.5rem;
+  --au-space-md: 1rem;
+  --au-space-lg: 1.5rem;
+  --au-space-xl: 2rem;
+
+  --au-radius-small: 2px;
+  --au-radius-medium: 4px;
+  --au-radius-large: 8px;
+
+  --au-border-width-thin: 1px;
+  --au-border-width-medium: 2px;
+
+  --au-shadow-panel: 0 2px 8px var(--au-color-shadow);
+  --au-transition-base: 160ms ease;
+}
+
+/* 暗色主题：在任意根节点上设置 data-theme="dark" 生效。 */
+[data-theme='dark'] {
+  --au-color-background: #29251f;
+  --au-color-surface: #322d26;
+  --au-color-surface-paper: #2e2922;
+  --au-color-text: #e5dccb;
+  --au-color-text-muted: #a3967f;
+  --au-color-border: #766b59;
+  --au-color-accent: #b5533f;
+  --au-color-shadow: rgba(0, 0, 0, 0.4);
+}
