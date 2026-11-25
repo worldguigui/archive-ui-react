@@ -3,6 +3,7 @@ import { cn } from 'archive-ui-react';
 import { OverviewPage } from './pages/OverviewPage';
 import { ComponentsPage } from './pages/ComponentsPage';
 import { MaterialsPage } from './pages/MaterialsPage';
+import { RenderLabPage } from './pages/RenderLabPage';
 import { ThemeEditorPage } from './pages/ThemeEditorPage';
 import type { PageId } from './pages/types';
 
@@ -10,6 +11,7 @@ const PAGES: Array<{ id: PageId; label: string }> = [
   { id: 'overview', label: 'Overview' },
   { id: 'components', label: 'Components' },
   { id: 'materials', label: 'Materials' },
+  { id: 'render-lab', label: 'Render Lab' },
   { id: 'theme-editor', label: 'Theme Editor' },
 ];
 
@@ -38,6 +40,7 @@ export default function App() {
         {page === 'overview' && <OverviewPage />}
         {page === 'components' && <ComponentsPage />}
         {page === 'materials' && <MaterialsPage />}
+        {page === 'render-lab' && <RenderLabPage />}
         {page === 'theme-editor' && <ThemeEditorPage />}
       </main>
     </div>

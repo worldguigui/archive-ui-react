@@ -1,0 +1,35 @@
+/*
+ * Primitive Tokens —— 原始设计数值层。
+ * 只表达"有哪些值"，不表达"用在哪里"；组件不得直接引用本层变量，
+ * 一律通过 themes/default.css 中的语义 Token（--au-color-*）间接使用。
+ *
+ * 色彩逻辑（ARCHIVE UI V0.1）：
+ * - 整体低饱和，暗部不是纯黑而是带色相的深色；
+ * - 高光不是纯白而是偏暖的灰白（象牙/羊皮纸）；
+ * - 强调色（锈橙 / 古金）集中使用，不同时抢夺注意力。
+ */
+:root {
+  /* 中性深色系（带暖色相的"墨色"） */
+  --au-ink-black: #11100f;
+  --au-charcoal: #1b1917;
+  --au-dark-umber: #29221e;
+  --au-walnut: #49372d;
+
+  /* 金属与强调系 */
+  --au-oxide: #a65332;
+  --au-antique-gold: #b18a55;
+  --au-ember: #fd9258;
+  --au-metal-hi: #c2a06b;
+  --au-metal-lo: #6d5237;
+  --au-metal-mid: #806744;
+
+  /* 纸与光系 */
+  --au-parchment: #d5c6a7;
+  --au-ivory: #e8e0d1;
+
+  /* 场景色（用于冷暖氛围，非界面主色） */
+  --au-fog-blue: #667b89;
+  --au-moss: #58604b;
+  --au-wine: #542d2c;
+  --au-ash: #89847a;
+}

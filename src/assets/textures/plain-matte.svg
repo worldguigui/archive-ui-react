@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512">
+  <!--
+    plain 材质纹理：哑光底材微颗粒（消费槽位 Texture，可平铺，512 周期）。
+    设计目标：哑光、克制、有纵深，无方向性条纹（不做各向异性纤维）。
+    两层结构，自下而上：
+    1. 纵深斑驳：低频、极低对比的明暗起伏，各向同性，提供"深度"而非"图案"；
+    2. 微颗粒：高频细噪经 gamma 压灭弱值，只留离散细点。
+    每层各含亮暗两版；alpha 映射沿用浏览器实测标定结论：
+    暗色特征一律用正斜率映射加暗色常量实现（负斜率在此管线无可见输出）。
+    本资产是稀疏 alpha 调制层，不承载底色；整体强度由外层 CSS 变量
+    （纹理不透明度入口 token）统一控制，勿在此固化全局透明度。
+  -->
+  <filter id="m-mottle-light" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="5" stitchTiles="stitch" />
+    <feColorMatrix type="matrix" values="0 0 0 0 0.72  0 0 0 0 0.66  0 0 0 0 0.56  0.22 0.22 0.22 0 -0.17" />
+  </filter>
+  <filter id="m-mottle-dark" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="9" stitchTiles="stitch" />
+    <feColorMatrix type="matrix" values="0 0 0 0 0.06  0 0 0 0 0.05  0 0 0 0 0.04  0.18 0.18 0.18 0 -0.11" />
+  </filter>
+  <filter id="m-grain-light" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" seed="7" stitchTiles="stitch" />
+    <feColorMatrix type="matrix" values="0 0 0 0 0.85  0 0 0 0 0.80  0 0 0 0 0.70  0.22 0.22 0.22 0 -0.13" />
+    <feComponentTransfer>
+      <feFuncA type="gamma" amplitude="1.6" exponent="2.4" offset="0" />
+    </feComponentTransfer>
+  </filter>
+  <filter id="m-grain-dark" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" seed="21" stitchTiles="stitch" />
+    <feColorMatrix type="matrix" values="0 0 0 0 0.05  0 0 0 0 0.045  0 0 0 0 0.04  -0.33 -0.33 -0.33 0 0.6" />
+    <feComponentTransfer>
+      <feFuncA type="gamma" amplitude="1.6" exponent="2.4" offset="0" />
+    </feComponentTransfer>
+  </filter>
+  <!-- 层 1：纵深斑驳（相对权重 0.5 / 0.45） -->
+  <rect width="512" height="512" filter="url(#m-mottle-light)" opacity="0.5" />
+  <rect width="512" height="512" filter="url(#m-mottle-dark)" opacity="0.45" />
+  <!-- 层 2：微颗粒（相对权重 0.65 / 0.55） -->
+  <rect width="512" height="512" filter="url(#m-grain-light)" opacity="0.65" />
+  <rect width="512" height="512" filter="url(#m-grain-dark)" opacity="0.55" />
+</svg>

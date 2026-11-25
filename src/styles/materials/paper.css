@@ -1,18 +1,24 @@
 /*
- * paper 材质：在组件表面叠加纸张纹理层。
- * 纹理图片位于 src/assets/textures/，经 Vite 构建后进入 dist/assets/，
- * CSS 中的 url() 引用会被构建期改写为发布后的相对路径。
+ * paper 材质：暗色纸张（强度等级 2，档案与编辑卡片用）。
+ * 视觉特征（对应 assets/textures/paper-grain.svg 的三层结构）：
+ * 暖象牙色细颗粒 + 横向纤维丝 + 低频纸面斑驳 + 均匀椭圆轻暗角。
+ * 色调多层承载（重制样品验收转正）：深棕基色 + 灯光氛围渐变
+ * （左上暖光、右下暗部）承载纸张在灯光下的进深；基色随主题重映射。
+ *
+ * 响应曲线：纹理与暗角均为线性增益，增益 = 各自档位 token；
+ * 语义参数（--au-texture-scale / --au-lighting-scale）由调用方写入，
+ * 本类只负责"档位 × 系数 → 入口变量"的计算。
  */
 .au-material--paper {
-  position: relative;
-  background-color: var(--au-color-surface-paper);
-}
-
-.au-material--paper::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url('../../assets/textures/paper-grain.svg');
-  background-repeat: repeat;
-  pointer-events: none;
+  --au-material-base: var(--au-material-paper-base);
+  --au-material-atmosphere-image:
+    radial-gradient(120% 90% at 18% 8%, rgba(245, 234, 216, 0.3), rgba(245, 234, 216, 0) 55%),
+    radial-gradient(140% 110% at 82% 100%, rgba(43, 28, 14, 0.42), rgba(43, 28, 14, 0) 60%),
+    linear-gradient(180deg, rgba(255, 244, 214, 0.1), rgba(31, 20, 10, 0.16));
+  --au-texture-grain-opacity: calc(
+    var(--au-texture-paper-grain-opacity) * var(--au-texture-scale)
+  );
+  --au-material-vignette-opacity: calc(
+    var(--au-material-paper-vignette-opacity) * var(--au-lighting-scale)
+  );
 }

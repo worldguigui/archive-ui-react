@@ -1,6 +1,6 @@
 {
   "name": "archive-ui-react",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "复古档案、古典出版物与神秘学风格的 React UI 组件库",
   "type": "module",
   "license": "MIT",
@@ -33,7 +33,7 @@
   "scripts": {
     "dev": "vite --config playground/vite.config.ts",
     "build": "vite build && pnpm build:css && tsc -p tsconfig.lib.json",
-    "build:css": "esbuild src/styles/style.css --bundle --outdir=dist --outbase=src/styles --entry-names=[name] --asset-names=assets/[name]-[hash] --loader:.svg=file",
+    "build:css": "esbuild src/styles/style.css --bundle --outdir=dist --outbase=src/styles --entry-names=[name] --asset-names=assets/[name]-[hash] --loader:.svg=file --loader:.webp=file --loader:.jpg=file --loader:.png=file",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",

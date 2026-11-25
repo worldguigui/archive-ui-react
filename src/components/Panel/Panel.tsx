@@ -1,7 +1,7 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 import { cn } from '../../utils/cn';
 
-export type PanelMaterial = 'plain' | 'paper';
+export type PanelMaterial = 'plain' | 'paper' | 'film';
 
 export interface PanelProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   /** 面板标题，显示在头部区域。 */
@@ -9,8 +9,9 @@ export interface PanelProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   /** 面板底部区域内容。 */
   footer?: ReactNode;
   /**
-   * 表面材质。plain 为纯色表面；paper 在表面上叠加纸张纹理。
-   * 材质是后续视觉图层系统的第一个验证点。
+   * 表面材质。plain 为纯色表面（轻微颗粒、无暗角）；
+   * paper 叠加纸张纹理（纤维/颗粒/斑驳）与轻暗角；
+   * film 叠加胶片颗粒簇与镜头暗角（展示型卡片用）。
    */
   material?: PanelMaterial;
   /** 是否显示四角装饰。 */
@@ -35,7 +36,7 @@ export function Panel({
     <section
       className={cn(
         'au-panel',
-        material === 'paper' && 'au-material--paper',
+        `au-material--${material}`,
         corners && 'au-panel--corners',
         className,
       )}

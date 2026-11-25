@@ -1,0 +1,24 @@
+/*
+ * plain 材质：哑光底材（强度等级 0-1，功能面板用）。
+ * 视觉目标（plain 草案样品验收转正）：近中性暖灰底 + 纵深氛围渐变 +
+ * 各向同性微颗粒，无方向性条纹；光影零响应（纯色表面不参与暗角）。
+ *
+ * 架构约定：材质类只写 custom properties（档位 × 响应系数），
+ * 不写任何具体 CSS 属性 —— 具体属性由组件的图层槽位消费入口变量绘制，
+ * 因此材质类与组件类之间不存在同特异性覆盖，与样式表顺序无关。
+ */
+.au-material--plain {
+  --au-material-base: var(--au-color-bg-elevated);
+  /* 纵深氛围：顶部暖光微亮、底部压暗，提供"深度"而非"图案" */
+  --au-material-atmosphere-image: linear-gradient(
+    175deg,
+    rgba(255, 244, 214, 0.045),
+    rgba(0, 0, 0, 0) 42%,
+    rgba(0, 0, 0, 0.22)
+  );
+  --au-material-grain-image: var(--au-texture-plain-grain-image);
+  --au-texture-grain-opacity: calc(
+    var(--au-texture-plain-grain-opacity) * var(--au-texture-scale)
+  );
+  --au-material-vignette-opacity: 0;
+}

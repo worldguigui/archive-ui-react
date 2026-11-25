@@ -1,13 +1,16 @@
 /*
  * 基础样式。只作用于组件库自身的 class（au- 前缀），
  * 不重置宿主项目的全局样式。
+ * 组件默认正文排版走 editorial 角色（衬线 + 编辑式行高）；
+ * 表单、按钮等高效阅读场景由各组件显式切换为 ui 角色。
  */
 [class^='au-'],
 [class*=' au-'] {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: var(--au-font-family-body);
+  font-family: var(--au-font-family-editorial);
+  font-size: var(--au-font-size-body);
   line-height: var(--au-line-height-normal);
-  color: var(--au-color-text);
+  color: var(--au-color-text-primary);
 }

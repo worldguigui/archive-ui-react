@@ -1,0 +1,14 @@
+/*
+ * 装饰 Token —— 装饰图形的不透明度与尺寸分级。
+ * 装饰线条必须有层级与节奏（结构线 / 装饰线 / 定位线 / 轨迹线），
+ * 不允许所有线条使用同一粗细、同一颜色、同一透明度。
+ */
+:root {
+  --au-ornament-opacity-subtle: 0.25;
+  --au-ornament-opacity-normal: 0.6;
+  --au-ornament-opacity-strong: 0.9;
+
+  --au-ornament-size-sm: 12px;
+  --au-ornament-size-md: 24px;
+  --au-ornament-size-lg: 48px;
+}

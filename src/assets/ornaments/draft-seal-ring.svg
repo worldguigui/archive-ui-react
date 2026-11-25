@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+  <!-- 印章草案：档案环形印章。双环、十二根环间刻度、内部抽象印记群组与一处骑缝点。
+       消费方式：mask 加强调色（oxide）着色，建议按装饰不透明度分级取值并稍作旋转使用。 -->
+  <g fill="none" stroke="#000">
+    <circle cx="48" cy="48" r="45" stroke-width="1.4"/>
+    <circle cx="48" cy="48" r="37" stroke-width="0.6" opacity="0.6"/>
+    <g stroke-width="0.8" opacity="0.55">
+      <line x1="48" y1="4.5" x2="48" y2="10"/>
+      <line x1="48" y1="4.5" x2="48" y2="10" transform="rotate(30 48 48)"/>
+      <line x1="48" y1="4.5" x2="48" y2="10" transform="rotate(60 48 48)"/>
+      <line x1="48" y1="4.5" x2="48" y2="10" transform="rotate(90 48 48)"/>
+      <line x1="48" y1="4.5" x2="48" y2="10" transform="rotate(120 48 48)"/>
+      <line x1="48" y1="4.5" x2="48" y2="10" transform="rotate(150 48 48)"/>
+      <line x1="48" y1="4.5" x2="48" y2="10" transform="rotate(180 48 48)"/>
+      <line x1="48" y1="4.5" x2="48" y2="10" transform="rotate(210 48 48)"/>
+      <line x1="48" y1="4.5" x2="48" y2="10" transform="rotate(240 48 48)"/>
+      <line x1="48" y1="4.5" x2="48" y2="10" transform="rotate(270 48 48)"/>
+      <line x1="48" y1="4.5" x2="48" y2="10" transform="rotate(300 48 48)"/>
+      <line x1="48" y1="4.5" x2="48" y2="10" transform="rotate(330 48 48)"/>
+    </g>
+    <g stroke-width="1.6" opacity="0.85">
+      <path d="M36 30 L36 62"/>
+    </g>
+    <path d="M28 38 L44 38" stroke-width="1.1" opacity="0.85"/>
+    <path d="M28 48 L44 48" stroke-width="1.1" opacity="0.85"/>
+    <path d="M59 34 L65 40 L59 46 L53 40 Z" stroke-width="1.1" opacity="0.85"/>
+    <path d="M50 58 L68 58" stroke-width="1.1" opacity="0.85"/>
+    <circle cx="48" cy="89" r="1.3" fill="#000" stroke="none"/>
+  </g>
+</svg>

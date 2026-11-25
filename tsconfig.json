@@ -16,7 +16,12 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "useDefineForClassFields": true,
-    "types": ["vite/client", "node"]
+    "types": ["vite/client", "node"],
+    "baseUrl": ".",
+    "paths": {
+      "archive-ui-react": ["./src/index.ts"],
+      "archive-ui-react/style.css": ["./src/styles/style.css"]
+    }
   },
   "include": ["src", "playground/src", "tests", "vite.config.ts", "playground/vite.config.ts", "vitest.config.ts", "playwright.config.ts"]
 }

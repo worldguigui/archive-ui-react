@@ -14,6 +14,13 @@ playwright/.cache/
 # 构建产物归档（pnpm pack 输出）
 *.tgz
 
+# 临时视觉校准工具与截图
+tmp-shot.mjs
+tmp-zoom.mjs
+tmp-lab.mjs
+tmp-shots/
+tmp-py-env/
+
 .env
 .env.*
 

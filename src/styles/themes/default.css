@@ -1,58 +1,84 @@
 /*
- * 默认主题（仿旧纸张 / 档案卷宗气质）。
- * 所有组件通过 CSS Variables 获取视觉属性，不硬编码主题数值。
- * 颜色定义与 src/tokens/colors.ts 保持对应。
+ * 语义 Token 层 —— 把 Primitive 值按"用途"映射给组件。
+ * 默认主题：暗色档案（Ink Archival，参照游戏内档案/榜单类界面）。
+ * 组件一律引用本层变量，不得引用 primitives 层，不得硬编码色值。
  */
 :root {
-  --au-color-background: #f1eadb;
-  --au-color-surface: #f7f1e3;
-  --au-color-surface-paper: #efe6cf;
-  --au-color-text: #352d25;
-  --au-color-text-muted: #7a6f5d;
-  --au-color-border: #a99b82;
-  --au-color-accent: #8c3b2e;
-  --au-color-shadow: rgba(53, 45, 37, 0.18);
+  /* 背景：画布 → 表面 → 浮起，三级纵深 */
+  --au-color-bg-canvas: var(--au-ink-black);
+  --au-color-bg-surface: var(--au-charcoal);
+  --au-color-bg-elevated: var(--au-dark-umber);
 
-  --au-font-family-body: Georgia, 'Times New Roman', 'Songti SC', 'SimSun', serif;
-  --au-font-family-heading: Georgia, 'Times New Roman', 'Songti SC', 'SimSun', serif;
+  /* 文本 */
+  --au-color-text-primary: var(--au-ivory);
+  --au-color-text-secondary: #a99e8d;
 
-  --au-font-size-xs: 0.75rem;
-  --au-font-size-sm: 0.875rem;
-  --au-font-size-md: 1rem;
-  --au-font-size-lg: 1.25rem;
-  --au-font-size-xl: 1.5rem;
+  /* 边框与线条 */
+  --au-color-border-subtle: var(--au-walnut);
+  --au-color-border-metal: var(--au-metal-mid);
+  /* 被光照亮的线条：hover / 选中态的边缘发亮色（集中使用，不做全局替换） */
+  --au-color-border-lit: var(--au-ember);
 
-  --au-font-weight-regular: 400;
-  --au-font-weight-bold: 700;
+  /* 强调色（集中使用） */
+  --au-color-accent-primary: var(--au-oxide);
+  --au-color-accent-gold: var(--au-antique-gold);
 
-  --au-line-height-tight: 1.3;
-  --au-line-height-normal: 1.6;
+  /* 材质基色：材质身份色调，与语义色同层管理、随主题重映射
+     （paper 羊皮纸调 / film 银盐冷调；透明纹理资产叠加其上构成完整材质） */
+  --au-material-paper-base: #332a23;
+  --au-material-film-base: #2e2925;
 
-  --au-space-xs: 0.25rem;
-  --au-space-sm: 0.5rem;
-  --au-space-md: 1rem;
-  --au-space-lg: 1.5rem;
-  --au-space-xl: 2rem;
+  /* film 纹理图源：真实底片乳剂亮度图按主题成对（同为 multiply 混合）——
+     暗版 = 黑场 + 亮划痕（暗主题：黑场压暗、划痕透出暖褐底色）；
+     亮版 = 反转亮度图，浅场 + 深划痕（亮主题：类似照片印刷，保证文字对比度） */
+  --au-texture-film-grain-image: url('../../assets/textures/film-emulsion.webp');
 
-  --au-radius-small: 2px;
-  --au-radius-medium: 4px;
-  --au-radius-large: 8px;
-
-  --au-border-width-thin: 1px;
-  --au-border-width-medium: 2px;
-
-  --au-shadow-panel: 0 2px 8px var(--au-color-shadow);
-  --au-transition-base: 160ms ease;
+  /* 遮罩与阴影 */
+  --au-color-overlay: var(--au-material-overlay);
+  --au-color-shadow: rgba(0, 0, 0, 0.45);
 }
 
-/* 暗色主题：在任意根节点上设置 data-theme="dark" 生效。 */
-[data-theme='dark'] {
-  --au-color-background: #29251f;
-  --au-color-surface: #322d26;
-  --au-color-surface-paper: #2e2922;
-  --au-color-text: #e5dccb;
-  --au-color-text-muted: #a3967f;
-  --au-color-border: #766b59;
-  --au-color-accent: #b5533f;
-  --au-color-shadow: rgba(0, 0, 0, 0.4);
+/*
+ * 亮色主题：羊皮纸文档（Parchment Document）。
+ * 在根节点设置 data-theme="light" 生效；语义名不变，仅重新映射。
+ */
+[data-theme='light'] {
+  --au-color-bg-canvas: #e9e2d2;
+  --au-color-bg-surface: #f1ebdd;
+  --au-color-bg-elevated: #f8f3e7;
+
+  --au-color-text-primary: #29221e;
+  --au-color-text-secondary: #6e6455;
+
+  --au-color-border-subtle: #c2b394;
+  --au-color-border-metal: #8a734f;
+  /* 亮色背景上 #fd9258 过浅，压深为锈橙以保证对比度 */
+  --au-color-border-lit: #c25522;
+
+  --au-color-accent-primary: #a65332;
+  --au-color-accent-gold: #8a6b3e;
+
+  --au-color-overlay: rgba(41, 34, 30, 0.55);
+  --au-color-shadow: rgba(53, 45, 37, 0.2);
+
+  /* 材质基色：亮主题下纸 / 胶片为羊皮纸亮调（纹理资产为透明层，底色决定观感） */
+  --au-material-paper-base: #ece1c6;
+  --au-material-film-base: #ddd7c9;
+
+  /* film 纹理亮主题换用反转亮度图（multiply 下浅场不变、划痕压深） */
+  --au-texture-film-grain-image: url('../../assets/textures/film-emulsion-light.webp');
+
+  /* 暗角亮主题重映射：黑基暗角（tokens/lighting.css 默认值）在浅色纸面上
+     会形成突兀黑角；同形状改暖褐基、低强度，保持"灯光下的纸张渐暗"语义 */
+  --au-gradient-vignette: radial-gradient(
+    ellipse at center,
+    transparent 40%,
+    rgba(92, 75, 55, 0.32) 100%
+  );
+  --au-gradient-vignette-lens: radial-gradient(
+    ellipse 120% 100% at 50% 46%,
+    transparent 42%,
+    rgba(92, 75, 55, 0.14) 66%,
+    rgba(80, 64, 46, 0.45) 100%
+  );
 }

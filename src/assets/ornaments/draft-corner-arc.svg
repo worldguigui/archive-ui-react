@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <!-- 角饰草案 B：圆弧角饰。四分之一圆弧自圆心附近划过角部，附三根内向短刻度。 -->
+  <g fill="none" stroke="#000" stroke-linecap="square">
+    <path d="M23 1 Q1 1 1 23" stroke-width="1"/>
+    <path d="M5 5 L2 2" stroke-width="0.55" opacity="0.65"/>
+    <path d="M12 1 L12 4" stroke-width="0.55" opacity="0.65"/>
+    <path d="M1 12 L4 12" stroke-width="0.55" opacity="0.65"/>
+  </g>
+</svg>

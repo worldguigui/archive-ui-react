@@ -43,28 +43,30 @@ archive-ui-react/
 
 ## 样式组织方式
 
-- `src/styles/style.css` 是全量样式入口，通过 `@import` 聚合所有样式文件。
+- `src/styles/style.css` 是全量样式入口，通过 `@import` 聚合所有样式文件（加载顺序：Token → 主题 → 基础 → 材质 → 组件）。
 - 构建时由 esbuild 单独打包为 `dist/style.css`（见下文"构建产物组织方式"）。
 - 样式文件分层：
-  - `styles/base.css`：作用于 `au-` 前缀 class 的基础规则（box-sizing、字体继承）。
-  - `styles/themes/default.css`：默认主题 CSS Variables 与暗色主题。
-  - `styles/materials/`：材质层（当前实现 `paper.css` 纸张纹理）。
+  - `styles/tokens/`：Primitive Token 层，六组文件（`primitives.css` 原始色板、`typography.css` 字体角色、`spacing.css` 间距/圆角/边框、`materials.css` 材质强度、`lighting.css` 阴影/辉光/氛围渐变、`decoration.css` 装饰分级）。组件禁止直接引用本层变量。
+  - `styles/themes/default.css`：Semantic 语义层，把 Primitive 值按用途映射（`--au-color-bg-canvas` 等）。默认主题为暗色档案（Ink Archival），`[data-theme='light']` 提供亮色羊皮纸变体。
+  - `styles/base.css`：作用于 `au-` 前缀 class 的基础规则（box-sizing、editorial 正文排版基线）。
+  - `styles/materials/`：材质层（当前实现 `plain.css` 哑光底材、`paper.css` 暗色纸张、`film.css` 底片乳剂，均只写槽位变量）。
   - `styles/components/`：各组件样式。
 - 所有 class 使用 `au-` 前缀 BEM 命名：`au-panel`、`au-panel__header`、`au-panel--corners`。
 - 组件不直接 import CSS，消费方通过 `import 'archive-ui-react/style.css'` 一次性加载全量样式（首版策略）。
+- 设计语言本体（九维度、色彩逻辑、材质分级、使用边界）见 `docs/design-system.md`。
 
 ## Design Tokens 组织方式
 
-- `src/tokens/` 提供 Token 的 TypeScript 定义（`colors.ts`、`typography.ts`、`spacing.ts`）。
-- CSS Variables 定义在 `src/styles/themes/default.css`，命名统一为 `--au-*`。
-- TS Token 与 CSS Variables 保持数值一一对应；TS 侧仅用于脚本场景（如 Playground 主题编辑器），组件样式一律引用 CSS Variables。
+- CSS 侧三层：Primitive（`styles/tokens/`）→ Semantic（`styles/themes/default.css`）→ 组件引用语义变量。命名统一为 `--au-*`。
+- TS 侧 `src/tokens/` 与 CSS 数值一一对应：`colors.ts`（`primitives` 原始色板 + `semanticDark`/`semanticLight` 语义映射）、`typography.ts`（display/editorial/ui/numeric 四角色）、`spacing.ts`。
+- TS Token 仅用于脚本场景（如 Playground 主题编辑器），组件样式一律引用 CSS Variables。
 
 ## 主题机制
 
 - 纯 CSS Variables 驱动，无 React Theme Context。
-- 默认主题定义在 `:root`，暗色主题通过 `[data-theme='dark']` 选择器覆盖变量。
-- 使用方在任意根节点设置 `data-theme="dark"` 即可切换。
-- 组件内不硬编码主题数值，全部引用 `--au-*` 变量。
+- 默认主题（暗色档案）定义在 `:root`；亮色羊皮纸主题通过 `[data-theme='light']` 选择器重新映射语义变量。
+- 使用方在任意根节点设置 `data-theme="light"` 即可切换，语义 Token 名保持不变。
+- 组件内不硬编码主题数值，全部引用语义层 `--au-color-*` 等变量。
 
 ## 静态资源管理
 
@@ -77,7 +79,7 @@ archive-ui-react/
 `pnpm build` 依次执行三个步骤：
 
 1. `vite build`（lib 模式）：打包 JS，输出 `dist/index.js`（ESM）与 `dist/index.cjs`（CJS）。React、React DOM 及 `react/jsx-runtime` 等运行时入口通过正则 `/^react($|\/)/`、`/^react-dom($|\/)/` 声明为 external，不进入产物。
-2. `pnpm build:css`（esbuild）：将 `src/styles/style.css` 打包为 `dist/style.css`，CSS 中 `url()` 引用的 SVG 资源输出到 `dist/assets/` 并改写为相对路径。
+2. `pnpm build:css`（esbuild）：将 `src/styles/style.css` 打包为 `dist/style.css`，CSS 中 `url()` 引用的资产（SVG 与位图 webp/jpg/png）输出到 `dist/assets/` 并改写为相对路径。
 3. `tsc -p tsconfig.lib.json`：生成声明文件到 `dist/`（与 JS 产物目录结构一致），入口为 `dist/index.d.ts`。
 
 `package.json` 关键字段：
@@ -100,9 +102,23 @@ archive-ui-react/
 
 ## 当前未实现（计划中）
 
-- 完整组件集：当前仅有 Panel（工程验证组件），API 与视觉规范未最终确定。
-- 视觉图层系统：材质层的组合规则、图片图层、遮罩等仅以 paper 材质做了管道验证。
+- 完整组件集：当前仅有 Panel（工程验证组件），组件 API 已有规范约束但会持续演进。
+- 视觉图层系统：油墨 / 金属 / 木质 / 烟熏玻璃材质仅定义了 Token，样式未实现（设计规范见 docs/design-system.md 维度 02；plain / paper / film 已实现，参数见 docs/materials/）。
+- 装饰预设 API（`decoration` prop）：装饰词汇已冻结，API 待组件集开发时立项。
+- 仪式性交互系统（点击特效）：设计定义完成（维度 09），`src/interaction-effects/` 模块为计划任务。
+- 场景主题：`rainy` / `botanical` / `archival` 未实现。
 - `src/hooks/`：尚无 hook，目录未创建（避免空目录）。
-- `styles/textures/`、`styles/decorations/` 样式分层：目录未创建，当前只有 materials 一层。
 - 字体文件：首版使用系统字体栈，未随包分发字体。
 - 组件级按需 CSS：首版明确不做。
+
+## 文档地图
+
+| 文档 | 职责 |
+| --- | --- |
+| `docs/design-system.md` | 设计语言规范（九维度、色彩、装饰、验收标准） |
+| `docs/rendering-system.md` | 渲染体系与美术资源架构（五层模型、槽位、资产规范） |
+| `docs/materials/` | 材质规范（每材质参数明细） |
+| `docs/decisions/` | 决策记录（影响长期架构的关键抉择） |
+| `docs/component-guidelines.md` | 组件开发规范 |
+| `docs/playground.md` | Playground 说明（正式展示 / 校准 / 实验区分区） |
+| `docs/architecture.md` / `docs/development.md` | 工程架构 / 开发流程 |

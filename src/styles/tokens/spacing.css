@@ -1,0 +1,19 @@
+/*
+ * 间距 / 圆角 / 边框宽度 Token。
+ */
+:root {
+  --au-space-xs: 0.25rem;
+  --au-space-sm: 0.5rem;
+  --au-space-md: 1rem;
+  --au-space-lg: 1.5rem;
+  --au-space-xl: 2rem;
+
+  --au-radius-small: 2px;
+  --au-radius-medium: 4px;
+  --au-radius-large: 8px;
+
+  /* hairline：视觉发丝线，用 1px + 低透明度边框色实现，避免 0.5px 渲染不一致 */
+  --au-border-width-hairline: 1px;
+  --au-border-width-normal: 1px;
+  --au-border-width-emphasis: 2px;
+}

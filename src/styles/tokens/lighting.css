@@ -1,0 +1,60 @@
+/*
+ * 光影 Token —— 阴影、辉光、氛围渐变。
+ * 渐变在这里承担环境光、空间深度与材质表现，
+ * 不得用于现代 SaaS 式的彩色渐变按钮。
+ */
+:root {
+  /* 阴影衰减 */
+  --au-shadow-soft: 0 4px 16px rgba(0, 0, 0, 0.25);
+  --au-shadow-deep: 0 12px 36px rgba(0, 0, 0, 0.45);
+
+  /* 局部辉光（选中 / 强调态使用，克制） */
+  --au-glow-gold: 0 0 18px rgba(177, 138, 85, 0.18);
+  --au-glow-oxide: 0 0 20px rgba(166, 83, 50, 0.2);
+
+  /* 环境光：画布上的暖光源（右下）与冷光源（左上），
+     强度经过校准使暗部"有温度但不变灰" */
+  --au-gradient-atmosphere-warm: radial-gradient(
+    ellipse at 80% 50%,
+    rgba(166, 83, 50, 0.26),
+    transparent 65%
+  );
+  --au-gradient-atmosphere-cool: radial-gradient(
+    ellipse at 30% 20%,
+    rgba(102, 123, 137, 0.2),
+    transparent 70%
+  );
+
+  /* 暗角 */
+  --au-gradient-vignette: radial-gradient(
+    ellipse at center,
+    transparent 35%,
+    rgba(10, 9, 8, 0.75) 100%
+  );
+
+  /* 镜头暗角：双拐点轮廓 —— 中心通透平台更长（40%），角部衰减更陡（0.88），
+     光学中心略上移（46%），模拟镜头成像；paper 用上面的均匀椭圆暗角 */
+  --au-gradient-vignette-lens: radial-gradient(
+    ellipse 120% 100% at 50% 46%,
+    transparent 40%,
+    rgba(8, 7, 6, 0.3) 66%,
+    rgba(6, 5, 4, 0.88) 100%
+  );
+
+  /* 旧金属渐变（徽章 / 编号 / 金属边框用） */
+  --au-gradient-antique-gold: linear-gradient(135deg, #6d5237, #c2a06b 48%, #795b3d);
+
+  /* 金属蚀刻线：胡桃木→余烬→胡桃木，两端淡出，
+     用于面板头部分隔线等"被光照亮的刻痕" */
+  --au-gradient-etch-line: linear-gradient(
+    90deg,
+    transparent,
+    var(--au-metal-lo) 12%,
+    var(--au-ember) 50%,
+    var(--au-metal-lo) 88%,
+    transparent
+  );
+
+  /* 动效：缓慢、克制、有仪式感，但反馈及时 */
+  --au-transition-base: 180ms ease;
+}

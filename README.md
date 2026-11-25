@@ -39,9 +39,9 @@ export default function App() {
 }
 ```
 
-暗色主题：在根节点设置 `data-theme="dark"`。
+主题：默认为暗色档案主题（Ink Archival）；在根节点设置 `data-theme="light"` 切换到亮色羊皮纸主题。设计语言见 [docs/design-system.md](docs/design-system.md)。
 
-> 当前处于工程初始化阶段，仅提供 Panel 验证组件，组件 API 与视觉规范尚未最终确定，不建议用于生产。
+> 当前视觉基线已冻结（设计规范见 [docs/design-system.md](docs/design-system.md)，渲染架构见 [docs/rendering-system.md](docs/rendering-system.md)），进入组件集开发阶段；现有 Panel 为验证组件，组件 API 将随组件集开发持续演进，不建议用于生产。
 
 ## 本地开发
 
@@ -61,13 +61,25 @@ pnpm lint             # ESLint 检查
 ```text
 archive-ui-react/
 ├── src/                  # 组件库源码（tokens / styles / assets / components）
-├── playground/           # 开发预览应用（Overview / Components / Materials / Theme Editor）
+├── playground/           # 开发预览应用（Overview / Components / Materials / Render Lab / Theme Editor）
 ├── docs/                 # 项目文档
 ├── public/playground/    # Playground 专属静态资源
 └── tests/                # 单元测试与 E2E 测试
 ```
 
 ## 版本变更
+
+### v0.2.0 设计语言 V0.1（ARCHIVE UI）· 视觉基线冻结
+
+1. 确立设计语言「ARCHIVE UI · Retro-Futurist Editorial」，九维度设计规范见 docs/design-system.md。
+2. Token 重构为三层：Primitive（原始色板/字体角色/材质/光影/装饰）→ Semantic（用途映射）→ 组件引用。
+3. 默认主题切换为暗色档案（Ink Archival），新增亮色羊皮纸主题（data-theme="light"）。
+4. 字体体系改为四角色（display / editorial / ui / numeric）；Panel、材质、角饰按新规范重做。
+5. 光影 Token（暗角/环境光/辉光/旧金属渐变）落地；paper 材质增加暗角层与强度 Token 化。
+6. 渲染体系定稿：五层模型（Base/Texture/Lighting/Structure/Interaction）、三槽位合成、纹理混合模式入口（normal / multiply）、氛围层、主题成对图源机制（见 docs/rendering-system.md 与 docs/decisions/）。
+7. 三材质定稿：plain（哑光微颗粒+纵深）、paper（深棕+灯光氛围+纤维斑驳）、film（真实乳剂亮度图 × multiply，明暗成对）；参数见 docs/materials/。
+8. 装饰体系：边框/角饰/分隔线/纹章/纹样词汇冻结（含 Signature 致敬复用），实现规则见 design-system 维度 04。
+9. Playground 扩展 Render Lab（资产目录/槽位解构/图层沙盘/混合矩阵/材质样品/维度归因/构成变体库），说明见 docs/playground.md；构建管线支持位图资产（webp/jpg/png）。
 
 ### v0.1.0 工程初始化
 

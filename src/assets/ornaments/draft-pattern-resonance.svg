@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+  <!-- 纹样草案：谐振徽版。左上不完整外框（顶边加左边的部分轮廓），
+       中央三角内接圆与圆心点，右侧引出带箭头的射线，框角带圆点，底部短衬线。
+       mask 消费，随语义色着色。 -->
+  <g fill="none" stroke="#000" stroke-linecap="square">
+    <path d="M70 8 H8 V44" stroke-width="1.2"/>
+    <path d="M48 30 L64 58 L32 58 Z" stroke-width="1.1"/>
+    <circle cx="48" cy="46" r="6" stroke-width="0.9"/>
+    <circle cx="48" cy="46" r="1.5" fill="#000" stroke="none"/>
+    <path d="M64 58 L84 58" stroke-width="1"/>
+    <path d="M84 58 L78 54" stroke-width="1"/>
+    <path d="M84 58 L78 62" stroke-width="1"/>
+    <path d="M32 66 L64 66" stroke-width="0.6" opacity="0.5"/>
+    <circle cx="70" cy="8" r="1.6" fill="#000" stroke="none"/>
+    <circle cx="8" cy="44" r="1.6" fill="#000" stroke="none"/>
+  </g>
+</svg>

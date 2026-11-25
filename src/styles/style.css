@@ -1,5 +1,16 @@
-/* 组件库全量样式入口，构建后输出为 dist/style.css。 */
-@import './base.css';
+/*
+ * 组件库全量样式入口，构建后输出为 dist/style.css。
+ * 加载顺序：Primitive Token → 其他 Token 组 → 语义主题 → 基础样式 → 材质 → 组件。
+ */
+@import './tokens/primitives.css';
+@import './tokens/typography.css';
+@import './tokens/spacing.css';
+@import './tokens/materials.css';
+@import './tokens/lighting.css';
+@import './tokens/decoration.css';
 @import './themes/default.css';
+@import './base.css';
+@import './materials/plain.css';
 @import './materials/paper.css';
+@import './materials/film.css';
 @import './components/panel.css';

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <!-- 角饰草案 C：制图刻度角饰。L 线沿臂带三根垂直定位刻度，制图标记风格。 -->
+  <g fill="none" stroke="#000" stroke-linecap="square">
+    <path d="M1.5 23 L1.5 1.5 L23 1.5" stroke-width="1"/>
+    <g stroke-width="0.5" opacity="0.7">
+      <path d="M7 1.5 L7 4.5"/>
+      <path d="M12 1.5 L12 4.5"/>
+      <path d="M17 1.5 L17 4.5"/>
+      <path d="M1.5 7 L4.5 7"/>
+      <path d="M1.5 12 L4.5 12"/>
+      <path d="M1.5 17 L4.5 17"/>
+    </g>
+  </g>
+</svg>

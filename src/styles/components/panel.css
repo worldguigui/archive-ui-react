@@ -1,48 +1,126 @@
+/*
+ * Panel —— 暗色档案面板（参照游戏内档案卡与榜单条目的视觉关系）：
+ * 发丝线分区、衬线金色标题、二级信息用小号标注体。
+ *
+ * 图层槽位约定（材质系统的组件侧实现）：
+ * - ::before 纹理层：消费 --au-material-grain-image / --au-material-grain-size /
+ *   --au-material-grain-position / --au-material-grain-repeat / --au-texture-grain-opacity；
+ * - ::after 光影层：消费 --au-material-vignette-image / --au-material-vignette-opacity。
+ * 材质类（.au-material--*）只写这些入口变量的值（档位 × 响应系数），
+ * 不写任何具体 CSS 属性 —— 本文件是唯一的绘制方，与样式表顺序无关。
+ */
 .au-panel {
   position: relative;
   display: flex;
   flex-direction: column;
-  background-color: var(--au-color-surface);
-  border: var(--au-border-width-thin) solid var(--au-color-border);
+  /* L1 Base：底色（主题层材质基色）+ 氛围子层（材质类可写，不缩放） */
+  background-color: var(--au-material-base);
+  background-image: var(--au-material-atmosphere-image, none);
+  /* 隔离层叠上下文：::before 的混合模式只与面板自身底色合成，不外泄页面背景 */
+  isolation: isolate;
+  border: var(--au-border-width-hairline) solid var(--au-color-border-subtle);
   border-radius: var(--au-radius-medium);
-  box-shadow: var(--au-shadow-panel);
+  box-shadow: var(--au-shadow-soft);
   overflow: hidden;
+  transition:
+    border-color var(--au-transition-base),
+    box-shadow var(--au-transition-base);
 }
 
+/* 悬停：边框提亮一档 + 局部暖光，模拟灯光扫过档案封面 */
+.au-panel:hover {
+  border-color: var(--au-color-border-metal);
+  box-shadow: var(--au-shadow-soft), var(--au-glow-gold);
+}
+
+/* 纹理层：颗粒图源、显示形态（size/position/repeat）、混合模式与强度都来自入口变量，
+   "暗部可感知，正文克制"；可平铺材质走默认值，整幅资产由材质类改写为 cover 单幅。
+   mix-blend-mode 与面板底色（及氛围层）合成 —— 不透明亮度图纹理依赖 multiply；
+   normal 时等于普通半透明叠加，无副作用 */
+.au-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--au-material-grain-image, var(--au-texture-grain-image));
+  background-size: var(--au-material-grain-size, auto);
+  background-position: var(--au-material-grain-position, 0% 0%);
+  background-repeat: var(--au-material-grain-repeat, repeat);
+  background-blend-mode: var(--au-material-grain-blend, normal);
+  mix-blend-mode: var(--au-material-grain-blend, normal);
+  opacity: var(--au-texture-grain-opacity);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 光影层：暗角形状与强度都来自入口变量，默认关闭（opacity 入口默认 0） */
+.au-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--au-material-vignette-image, var(--au-gradient-vignette));
+  opacity: var(--au-material-vignette-opacity);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 头部：表面色 + 一线古金微光，模拟档案夹的烫金封脊。
+   分隔线由 ::after 蚀刻渐变线承担（胡桃木→余烬→胡桃木，两端淡出），
+   模拟金属刻痕被烛光照亮的效果。 */
 .au-panel__header {
+  position: relative;
+  z-index: 1;
   padding: var(--au-space-sm) var(--au-space-md);
-  border-bottom: var(--au-border-width-thin) solid var(--au-color-border);
-  background-color: var(--au-color-background);
+  background-image: linear-gradient(180deg, rgba(177, 138, 85, 0.08), transparent);
+  background-color: var(--au-color-bg-surface);
+}
+
+.au-panel__header::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background-image: var(--au-gradient-etch-line);
+  pointer-events: none;
 }
 
 .au-panel__title {
-  font-family: var(--au-font-family-heading);
-  font-size: var(--au-font-size-lg);
+  font-family: var(--au-font-family-display);
+  font-size: var(--au-font-size-title);
   font-weight: var(--au-font-weight-bold);
   line-height: var(--au-line-height-tight);
-  letter-spacing: 0.04em;
-  color: var(--au-color-accent);
+  letter-spacing: var(--au-letter-spacing-heading);
+  color: var(--au-color-accent-gold);
 }
 
 .au-panel__content {
   position: relative;
+  z-index: 1;
   padding: var(--au-space-md);
   flex: 1;
+  font-size: var(--au-font-size-body);
+  line-height: var(--au-line-height-editorial);
 }
 
+/* 底部：标注体（UI 无衬线 + 大字距），承担"档案编号"类的次要信息 */
 .au-panel__footer {
+  position: relative;
+  z-index: 1;
   padding: var(--au-space-sm) var(--au-space-md);
-  border-top: var(--au-border-width-thin) solid var(--au-color-border);
-  font-size: var(--au-font-size-sm);
-  color: var(--au-color-text-muted);
+  border-top: var(--au-border-width-hairline) solid var(--au-color-border-subtle);
+  font-family: var(--au-font-family-ui);
+  font-size: var(--au-font-size-caption);
+  letter-spacing: var(--au-letter-spacing-label);
+  color: var(--au-color-text-secondary);
 }
 
-/* 四角装饰：以 SVG 作为 mask，颜色随 --au-color-border 主题变量变化。 */
+/* 四角装饰：SVG 作为 mask，颜色取金属线条语义色，随主题变化 */
 .au-panel--corners .au-panel__corner {
   position: absolute;
-  width: 18px;
-  height: 18px;
-  background-color: var(--au-color-border);
+  width: var(--au-ornament-size-md);
+  height: var(--au-ornament-size-md);
+  background-color: var(--au-color-border-metal);
   -webkit-mask: url('../../assets/ornaments/corner.svg') center / contain no-repeat;
   mask: url('../../assets/ornaments/corner.svg') center / contain no-repeat;
   pointer-events: none;

@@ -1,0 +1,70 @@
+/*
+ * 材质 Token —— 材质档位与槽位入口。
+ *
+ * 三层结构（配合 materials/plain.css、paper.css、film.css 的曲线定义）：
+ *   1. 入口变量：组件图层槽位直接消费（--au-texture-grain-opacity、
+ *      --au-material-vignette-opacity、--au-material-grain-* 等），无材质类时取默认值；
+ *   2. 档位变量：各材质响应曲线的增益基准（--au-texture-*-grain-opacity、
+ *      --au-material-*-vignette-opacity），只被材质类引用；
+ *   3. 响应系数：--au-texture-scale / --au-lighting-scale，语义参数输入
+ *      （实验台滑杆或调用方写入），材质类用 calc 把"档位 × 系数"写入入口。
+ *
+ * 注意：材质基色（--au-material-paper-base / --au-material-film-base）与
+ * 随主题切换的 film 纹理图源（--au-texture-film-grain-image）是身份要素，
+ * 必须随明暗主题重映射，定义在 themes/default.css，不在本文件。
+ *
+ * 已实现材质：plain / paper / film；油墨 / 金属 / 木质 / 烟熏玻璃为后续计划。
+ */
+:root {
+  /* —— 入口：纹理图层不透明度（组件 ::before 消费） —— */
+  --au-texture-grain-opacity: 0.3;
+  --au-texture-dust-opacity: 0.12;
+
+  /* —— 入口：纹理图层混合模式（::before 与底色的合成方式）。
+     normal 为普通半透明叠加；不透明亮度图类纹理（film 乳剂图）需要
+     multiply / screen 才能形成"底色场 + 对比划痕"的正确观感 —— */
+  --au-material-grain-blend: normal;
+
+  /* —— 入口：氛围层（L1 Base 的色彩渐变子层，画在底色之上、伪元素之下），
+     不受任何强度缩放；无氛围材质保持 none —— */
+  --au-material-atmosphere-image: none;
+
+  /* —— 档位：各材质的纹理增益基准（scale = 1 时的默认质感） —— */
+  /* plain 用各向同性哑光微颗粒（plain-matte），中等档位承载纵深 */
+  --au-texture-plain-grain-opacity: 0.4;
+  /* paper 资产为低频软特征（斑驳/纤维），感知灵敏度低于高频硬簇，
+     需要更高的有效强度才能达到同等肉眼存在感，故档位较高 */
+  --au-texture-paper-grain-opacity: 0.55;
+  /* film 乳剂亮度图走 multiply：半透明会稀释划痕对比，需全强度；
+     强度调节语义为"黑场压暗程度"而非"纹理淡出" */
+  --au-texture-film-grain-opacity: 1;
+
+  /* —— 入口：暗角强度（组件 ::after 消费），默认关闭 —— */
+  --au-material-vignette-opacity: 0;
+
+  /* —— 档位：各材质的暗角增益基准（paper 是灯光下的纸张渐暗，film 是镜头光学暗角） —— */
+  --au-material-paper-vignette-opacity: 0.38;
+  --au-material-film-vignette-opacity: 0.55;
+
+  /* —— 响应系数输入：默认无缩放；实验台滑杆写这两个值，不直接写档位/入口 —— */
+  --au-texture-scale: 1;
+  --au-lighting-scale: 1;
+
+  /* —— 纹理图资产登记：主题无关的图源在此注册一次 ——
+     paper / plain 为可平铺透明层；film 的图源（--au-texture-film-grain-image）
+     随主题成对（暗版 / 亮版反转图），定义在 themes/default.css。
+     注意：url 位于自定义属性内，依赖构建工具做相对路径重写；
+     若产物路径错误，需将这两条迁移至能正确处理的文件并注释说明。 */
+  --au-texture-grain-image: url('../../assets/textures/paper-grain.svg');
+  --au-texture-plain-grain-image: url('../../assets/textures/plain-matte.svg');
+
+  /* —— 入口：纹理图层显示形态（可平铺纹理走默认 repeat + 固有尺寸；
+     整幅构图型资产由材质类改写为 cover 单幅 + 居中锚定 + 禁平铺，
+     否则整幅图按固有尺寸左上角平铺，构图仅露出一角） —— */
+  --au-material-grain-size: auto;
+  --au-material-grain-position: 0% 0%;
+  --au-material-grain-repeat: repeat;
+
+  /* —— 遮罩 —— */
+  --au-material-overlay: rgba(17, 16, 15, 0.82);
+}

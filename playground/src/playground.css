@@ -1,11 +1,31 @@
 /*
  * Playground 专属布局样式，统一使用 pg- 前缀，
  * 与组件库的 au- 前缀样式严格分离，互不污染。
+ * Playground 自身的视觉也遵循 ARCHIVE UI 设计语言，
+ * 但只引用组件库的语义 Token。
  */
+
+/* 画布：暗色档案底色 + 暖/冷双环境光（固定视口，不随滚动移动） */
 body {
   margin: 0;
-  background-color: var(--au-color-background);
-  color: var(--au-color-text);
+  background-color: var(--au-color-bg-canvas);
+  background-image:
+    var(--au-gradient-atmosphere-warm),
+    var(--au-gradient-atmosphere-cool);
+  background-attachment: fixed;
+  color: var(--au-color-text-primary);
+}
+
+/* 尘埃层：覆盖全视口的悬浮颗粒，模拟胶片放映室里的空气质感 */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url('../../src/assets/textures/paper-grain.svg');
+  background-repeat: repeat;
+  opacity: var(--au-texture-dust-opacity);
+  pointer-events: none;
+  z-index: 999;
 }
 
 .pg-app {
@@ -22,15 +42,15 @@ body {
   align-items: center;
   gap: 24px;
   padding: 16px 0;
-  border-bottom: 1px solid var(--au-color-border);
+  border-bottom: var(--au-border-width-hairline) solid var(--au-color-border-subtle);
 }
 
 .pg-nav__brand {
-  font-family: var(--au-font-family-heading);
-  font-size: var(--au-font-size-lg);
+  font-family: var(--au-font-family-display);
+  font-size: var(--au-font-size-title);
   font-weight: var(--au-font-weight-bold);
-  letter-spacing: 0.06em;
-  color: var(--au-color-accent);
+  letter-spacing: var(--au-letter-spacing-display);
+  color: var(--au-color-accent-gold);
 }
 
 .pg-nav__list {
@@ -42,20 +62,44 @@ body {
 }
 
 .pg-nav__item {
-  border: 1px solid transparent;
+  position: relative;
+  border: var(--au-border-width-hairline) solid transparent;
   background: none;
   padding: 6px 12px;
-  font-size: var(--au-font-size-sm);
-  font-family: var(--au-font-family-body);
-  color: var(--au-color-text-muted);
+  font-family: var(--au-font-family-ui);
+  font-size: var(--au-font-size-caption);
+  letter-spacing: var(--au-letter-spacing-label);
+  color: var(--au-color-text-secondary);
   cursor: pointer;
   border-radius: var(--au-radius-small);
+  transition: color var(--au-transition-base);
+}
+
+/* 悬停：文字提亮 + 底部蚀刻亮线（余烬色渐变，两端淡出） */
+.pg-nav__item::after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 2px;
+  height: 1px;
+  background-image: var(--au-gradient-etch-line);
+  opacity: 0;
+  transition: opacity var(--au-transition-base);
+}
+
+.pg-nav__item:hover {
+  color: var(--au-color-accent-gold);
+}
+
+.pg-nav__item:hover::after {
+  opacity: 1;
 }
 
 .pg-nav__item--active {
-  color: var(--au-color-accent);
-  border-color: var(--au-color-border);
-  background-color: var(--au-color-surface);
+  color: var(--au-color-accent-gold);
+  border-color: var(--au-color-border-metal);
+  background-color: var(--au-color-bg-surface);
 }
 
 .pg-main {
@@ -70,14 +114,27 @@ body {
 }
 
 .pg-heading {
-  font-family: var(--au-font-family-heading);
-  color: var(--au-color-text);
-  letter-spacing: 0.05em;
+  font-family: var(--au-font-family-display);
+  font-size: var(--au-font-size-heading);
+  font-weight: var(--au-font-weight-bold);
+  letter-spacing: var(--au-letter-spacing-heading);
+  color: var(--au-color-text-primary);
+}
+
+.pg-subheading {
+  margin: 12px 0 0;
+  font-family: var(--au-font-family-display);
+  font-size: var(--au-font-size-title);
+  font-weight: var(--au-font-weight-bold);
+  letter-spacing: var(--au-letter-spacing-heading);
+  color: var(--au-color-accent-gold);
 }
 
 .pg-note {
-  color: var(--au-color-text-muted);
-  font-size: var(--au-font-size-sm);
+  margin: 0;
+  color: var(--au-color-text-secondary);
+  font-size: var(--au-font-size-caption);
+  letter-spacing: var(--au-letter-spacing-label);
 }
 
 .pg-grid {
@@ -91,24 +148,114 @@ body {
   align-items: start;
 }
 
+/* 三级对照：三列等宽，窄屏自动换行 */
+.pg-grid--tiers {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  align-items: start;
+}
+
+/* 展示级卡片：金属边框 + 深阴影 + 微弱锈光，标题放大一档 */
+.pg-tier-showcase {
+  border-color: var(--au-color-border-metal);
+  box-shadow: var(--au-shadow-deep), var(--au-glow-oxide);
+}
+
+.pg-tier-showcase .au-panel__title {
+  font-size: var(--au-font-size-heading);
+  letter-spacing: var(--au-letter-spacing-display);
+}
+
 .pg-toolbar {
   display: flex;
   gap: 12px;
 }
 
 .pg-btn {
-  border: 1px solid var(--au-color-border);
-  background-color: var(--au-color-surface);
-  color: var(--au-color-text);
-  font-family: var(--au-font-family-body);
-  padding: 6px 14px;
+  border: var(--au-border-width-hairline) solid var(--au-color-border-subtle);
+  background-color: var(--au-color-bg-surface);
+  color: var(--au-color-text-primary);
+  font-family: var(--au-font-family-ui);
+  font-size: var(--au-font-size-caption);
+  letter-spacing: var(--au-letter-spacing-label);
+  padding: 8px 16px;
   border-radius: var(--au-radius-small);
   cursor: pointer;
+  transition:
+    color var(--au-transition-base),
+    border-color var(--au-transition-base),
+    box-shadow var(--au-transition-base);
 }
 
 .pg-btn:hover {
-  color: var(--au-color-accent);
-  border-color: var(--au-color-accent);
+  color: var(--au-color-accent-gold);
+  border-color: var(--au-color-border-lit);
+  box-shadow: var(--au-glow-gold);
+}
+
+/* 选中态：材质实验台的材质切换按钮使用 */
+.pg-btn--active {
+  color: var(--au-color-accent-gold);
+  border-color: var(--au-color-border-metal);
+  background-color: var(--au-color-bg-elevated);
+  box-shadow: var(--au-glow-gold);
+}
+
+/* 材质实验台：控制台与实时预览并排 */
+.pg-studio {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+
+.pg-studio__preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pg-studio__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pg-studio__row {
+  display: grid;
+  grid-template-columns: 80px 1fr 48px;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--au-font-family-ui);
+  font-size: var(--au-font-size-caption);
+}
+
+/* 材质切换行：按钮组用流式布局，不套用滑杆行的三列网格 */
+.pg-studio__row--materials {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.pg-studio__row--materials .pg-btn {
+  padding: 6px 10px;
+}
+
+.pg-studio__label {
+  color: var(--au-color-text-secondary);
+  letter-spacing: var(--au-letter-spacing-label);
+}
+
+.pg-studio__value {
+  font-family: var(--au-font-family-numeric);
+  color: var(--au-color-accent-gold);
+  text-align: right;
+}
+
+.pg-studio input[type='range'] {
+  width: 100%;
+  accent-color: var(--au-color-accent-gold);
+  cursor: pointer;
 }
 
 .pg-editor {
@@ -116,26 +263,53 @@ body {
   flex-direction: column;
   gap: 10px;
   padding: 16px;
-  border: 1px solid var(--au-color-border);
+  border: var(--au-border-width-hairline) solid var(--au-color-border-subtle);
   border-radius: var(--au-radius-medium);
-  background-color: var(--au-color-surface);
+  background-color: var(--au-color-bg-surface);
 }
 
 .pg-editor__row {
   display: grid;
-  grid-template-columns: 110px 1fr 40px;
+  /* minmax(0, 1fr) 允许变量名截断，长名不再撑破布局 */
+  grid-template-columns: 110px minmax(0, 1fr) 44px;
   align-items: center;
   gap: 8px;
-  font-size: var(--au-font-size-sm);
+  font-family: var(--au-font-family-ui);
+  font-size: var(--au-font-size-caption);
 }
 
 .pg-editor__name {
-  color: var(--au-color-text-muted);
+  color: var(--au-color-text-secondary);
+  white-space: nowrap;
 }
 
 .pg-editor__var {
-  font-size: var(--au-font-size-xs);
-  color: var(--au-color-text);
+  font-family: var(--au-font-family-numeric);
+  font-size: var(--au-font-size-caption);
+  color: var(--au-color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 色板：去掉原生控件的默认白框，套上金属发丝线边框 */
+.pg-editor__row input[type='color'] {
+  inline-size: 44px;
+  block-size: 26px;
+  padding: 0;
+  border: var(--au-border-width-hairline) solid var(--au-color-border-metal);
+  border-radius: var(--au-radius-small);
+  background: none;
+  cursor: pointer;
+}
+
+.pg-editor__row input[type='color']::-webkit-color-swatch-wrapper {
+  padding: 2px;
+}
+
+.pg-editor__row input[type='color']::-webkit-color-swatch {
+  border: none;
+  border-radius: calc(var(--au-radius-small) - 1px);
 }
 
 .pg-preview {
@@ -145,5 +319,729 @@ body {
 }
 
 code {
-  font-family: Consolas, Monaco, monospace;
+  font-family: var(--au-font-family-numeric);
+}
+
+/*
+ * —— Render Lab：渲染实验室（docs/rendering-system.md · P0） ——
+ * 造资产、验渲染的长期工具；与 Materials 校准台（校参数）分工。
+ * 本区块允许直接消费组件入口变量（解剖用途），
+ * 但仍只引用组件库语义 Token，不引入 playground 私有视觉常量。
+ */
+
+.pg-lab {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.pg-lab__controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.pg-lab__label {
+  margin-right: 4px;
+  color: var(--au-color-text-secondary);
+  font-family: var(--au-font-family-ui);
+  font-size: var(--au-font-size-caption);
+  letter-spacing: var(--au-letter-spacing-label);
+}
+
+/* 一、资产目录 */
+.pg-lab__assets {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.pg-lab__asset {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px;
+  border: var(--au-border-width-hairline) solid var(--au-color-border-subtle);
+  border-radius: var(--au-radius-medium);
+  background-color: var(--au-color-bg-surface);
+}
+
+.pg-lab__asset-swatch {
+  height: 120px;
+  border: var(--au-border-width-hairline) solid var(--au-color-border-subtle);
+  border-radius: var(--au-radius-small);
+  background-color: var(--au-material-paper-base);
+  /* 宽定高随：保持资产固有纵横比，横版资产（如底片整幅）不被压扁 */
+  background-size: 160px auto;
+  background-repeat: repeat;
+}
+
+.pg-lab__asset-name {
+  color: var(--au-color-accent-gold);
+  font-size: var(--au-font-size-caption);
+}
+
+.pg-lab__asset-meta {
+  color: var(--au-color-text-secondary);
+  font-size: var(--au-font-size-caption);
+  letter-spacing: var(--au-letter-spacing-label);
+}
+
+.pg-lab__asset-meta--status {
+  color: var(--au-color-text-primary);
+}
+
+/* 二、槽位解构：Panel 组件与裸元素复刻并排 */
+.pg-lab__anatomy {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* 槽位消费器的最小复刻：与 panel.css 的 Base / Texture / Lighting 规则逐字对应，
+   用于验证"材质类只写变量，任何元素都能成为绘制方"的可移植性。
+   材质类（.au-material--*）负责写变量，本类是唯一的绘制方。 */
+.pg-lab__swatch {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 300px;
+  border-radius: var(--au-radius-medium);
+  background-color: var(--au-material-base, var(--au-color-bg-elevated));
+  background-image: var(--au-material-atmosphere-image, none);
+  isolation: isolate;
+}
+
+.pg-lab__swatch::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--au-material-grain-image, var(--au-texture-grain-image));
+  background-size: var(--au-material-grain-size, auto);
+  background-position: var(--au-material-grain-position, 0% 0%);
+  background-repeat: var(--au-material-grain-repeat, repeat);
+  mix-blend-mode: var(--au-material-grain-blend, normal);
+  opacity: var(--au-texture-grain-opacity);
+  pointer-events: none;
+}
+
+.pg-lab__swatch::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--au-material-vignette-image, var(--au-gradient-vignette));
+  opacity: var(--au-material-vignette-opacity);
+  pointer-events: none;
+}
+
+/* 三、图层堆叠沙盘 */
+.pg-lab__sandbox {
+  display: grid;
+  grid-template-columns: minmax(320px, 1.2fr) minmax(280px, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.pg-lab__canvas {
+  position: relative;
+  overflow: hidden;
+  height: 280px;
+  border: var(--au-border-width-hairline) solid var(--au-color-border-subtle);
+  border-radius: var(--au-radius-medium);
+  /* 隔离层叠上下文：mix-blend-mode 只与画布内图层混合，不外泄到页面背景 */
+  isolation: isolate;
+}
+
+.pg-lab__layer {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+  pointer-events: none;
+}
+
+.pg-lab__layer-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.pg-lab__layer-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: var(--au-border-width-hairline) solid var(--au-color-border-subtle);
+  border-radius: var(--au-radius-medium);
+  background-color: var(--au-color-bg-surface);
+}
+
+.pg-lab__layer-title {
+  color: var(--au-color-accent-gold);
+  font-size: var(--au-font-size-caption);
+  letter-spacing: var(--au-letter-spacing-label);
+}
+
+.pg-lab__control {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--au-color-text-secondary);
+  font-family: var(--au-font-family-ui);
+  font-size: var(--au-font-size-caption);
+  letter-spacing: var(--au-letter-spacing-label);
+}
+
+.pg-lab__select {
+  padding: 4px 8px;
+  border: var(--au-border-width-hairline) solid var(--au-color-border-subtle);
+  border-radius: var(--au-radius-small);
+  background-color: var(--au-color-bg-elevated);
+  color: var(--au-color-text-primary);
+  font-family: var(--au-font-family-ui);
+  font-size: var(--au-font-size-caption);
+  cursor: pointer;
+}
+
+.pg-lab__range {
+  width: 100%;
+  accent-color: var(--au-color-accent-gold);
+  cursor: pointer;
+}
+
+/* 四、混合模式对照矩阵 */
+.pg-lab__matrix {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.pg-lab__cell {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pg-lab__cell-canvas {
+  height: 90px;
+  /* 宽定高随：保持资产固有纵横比（底片整幅为 1600×1200 横版） */
+  background-size: 220px auto;
+  background-repeat: repeat;
+  border: var(--au-border-width-hairline) solid var(--au-color-border-subtle);
+  border-radius: var(--au-radius-small);
+}
+
+/* 五、材质样品区 */
+.pg-lab__specimens {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.pg-lab__specimen {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pg-lab__caption {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: var(--au-color-text-secondary);
+  font-size: var(--au-font-size-caption);
+  letter-spacing: var(--au-letter-spacing-label);
+}
+
+.pg-lab__caption strong {
+  color: var(--au-color-text-primary);
+}
+
+.pg-lab__caption-target {
+  color: var(--au-color-accent-gold);
+}
+
+/*
+ * 纹样母题陈列。
+ * 几何纹样草案（draft-pattern-*.svg）走 mask 随语义色着色，主题自适应；
+ * Signature 素材（角色签名 / 徽记 webp）为致敬性复用，保留笔迹原色直引。
+ */
+.pg-pattern-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.pg-pattern-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px;
+  border: var(--au-border-width-hairline) solid var(--au-color-border-subtle);
+  border-radius: var(--au-radius-small);
+  background-color: var(--au-color-bg-surface);
+}
+
+.pg-pattern-card__name {
+  font-family: var(--au-font-family-ui);
+  font-size: var(--au-font-size-caption);
+  letter-spacing: var(--au-letter-spacing-label);
+  color: var(--au-color-text-secondary);
+  white-space: nowrap;
+}
+
+.pg-pattern {
+  display: block;
+  background-color: var(--au-color-accent-gold);
+  opacity: var(--au-ornament-opacity-normal);
+}
+
+.pg-pattern--stepped {
+  width: 96px;
+  height: 64px;
+  -webkit-mask: url('../../src/assets/ornaments/draft-pattern-stepped.svg') center / contain no-repeat;
+  mask: url('../../src/assets/ornaments/draft-pattern-stepped.svg') center / contain no-repeat;
+}
+
+.pg-pattern--nodes {
+  width: 24px;
+  height: 96px;
+  -webkit-mask: url('../../src/assets/ornaments/draft-pattern-nodes-v.svg') center / contain no-repeat;
+  mask: url('../../src/assets/ornaments/draft-pattern-nodes-v.svg') center / contain no-repeat;
+}
+
+.pg-pattern--resonance {
+  width: 72px;
+  height: 72px;
+  -webkit-mask: url('../../src/assets/ornaments/draft-pattern-resonance.svg') center / contain no-repeat;
+  mask: url('../../src/assets/ornaments/draft-pattern-resonance.svg') center / contain no-repeat;
+}
+
+.pg-sig {
+  display: block;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: var(--au-ornament-opacity-normal);
+}
+
+.pg-sig--sonetto {
+  width: 88px;
+  height: 29px;
+  background-image: url('../../src/assets/textures/Signature-3157.webp');
+}
+
+.pg-sig--narkissos {
+  width: 88px;
+  height: 26px;
+  background-image: url('../../src/assets/textures/Signature-3023.webp');
+}
+
+.pg-sig--hex {
+  width: 56px;
+  height: 56px;
+  background-image: url('../../src/assets/textures/Signature-3066.webp');
+}
+
+.pg-sig--star {
+  width: 56px;
+  height: 56px;
+  background-image: url('../../src/assets/textures/Signature-3079.webp');
+}
+
+/*
+ * 材质样品陈列色块（第五区）。
+ * 三材质已转正（正式类 src/styles/materials/）；本组以 pg- 命名空间
+ * 独立绘制同构色块用于陈列对照，paper 保留中调羊皮纸底色
+ * 作为正式深棕（基线冻结决议 C3）的对照线。
+ */
+.pg-draft__swatch {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 300px;
+  border-radius: var(--au-radius-medium);
+  background-color: var(--pg-draft-base);
+  background-image: var(--pg-draft-atmosphere);
+  /* 隔离层叠上下文：::before 的混合模式只与本色块底色合成 */
+  isolation: isolate;
+}
+
+.pg-draft__swatch::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--pg-draft-grain-image);
+  background-repeat: var(--pg-draft-grain-repeat, repeat);
+  background-size: var(--pg-draft-grain-size, auto);
+  background-position: var(--pg-draft-grain-position, 0% 0%);
+  mix-blend-mode: var(--pg-draft-grain-blend, normal);
+  opacity: var(--pg-draft-grain-opacity);
+  pointer-events: none;
+}
+
+.pg-draft__swatch::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--pg-draft-vignette-image, var(--au-gradient-vignette));
+  opacity: var(--pg-draft-vignette-opacity, 0);
+  pointer-events: none;
+}
+
+/* plain：哑光底材。近中性深暖灰 + 微颗粒纵深层，无方向条纹 */
+.pg-draft--plain {
+  --pg-draft-base: #29221e;
+  --pg-draft-atmosphere: linear-gradient(175deg, rgba(255, 244, 214, 0.045), rgba(0, 0, 0, 0) 42%, rgba(0, 0, 0, 0.22));
+  --pg-draft-grain-image: url('../../src/assets/textures/plain-matte.svg');
+  --pg-draft-grain-opacity: 0.4;
+  --pg-draft-vignette-opacity: 0;
+}
+
+/* paper：旧纸（羊皮纸调）。色调多层承载：羊皮纸中调底色 +
+   灯光氛围渐变（左上暖光、右下暗部、整体冷暖过渡）+
+   维护者重绘的氧化斑纹理 + 轻暗角 */
+.pg-draft--paper {
+  --pg-draft-base: #6e5a3c;
+  --pg-draft-atmosphere:
+    radial-gradient(120% 90% at 18% 8%, rgba(245, 234, 216, 0.3), rgba(245, 234, 216, 0) 55%),
+    radial-gradient(140% 110% at 82% 100%, rgba(43, 28, 14, 0.42), rgba(43, 28, 14, 0) 60%),
+    linear-gradient(180deg, rgba(255, 244, 214, 0.1), rgba(31, 20, 10, 0.16));
+  --pg-draft-grain-image: url('../../src/assets/textures/paper-grain.svg');
+  --pg-draft-grain-opacity: 1;
+  --pg-draft-vignette-opacity: 0.28;
+}
+
+/* film：底片。真实底片乳剂亮度图（与正式 film 材质同源），
+   multiply 混合：黑场压暗、划痕透出底色；单幅 cover 居中、禁止平铺；
+   暗角由光影槽承担（本亮度图无烘焙暗角），此处草案色块关闭 */
+.pg-draft--film {
+  --pg-draft-base: #221a12;
+  --pg-draft-atmosphere: none;
+  --pg-draft-grain-image: url('../../src/assets/textures/film-emulsion.webp');
+  --pg-draft-grain-repeat: no-repeat;
+  --pg-draft-grain-size: cover;
+  --pg-draft-grain-position: center;
+  --pg-draft-grain-blend: multiply;
+  --pg-draft-grain-opacity: 1;
+  --pg-draft-vignette-opacity: 0;
+}
+
+/*
+ * 维度隔离归因实验台（RenderLab 第七区 · 实验区规则，非组件库规范）。
+ * 五层渲染模型：L1 Base（底色/氛围，基底不可关）/ L2 材质纹理（::before）/
+ * L3 光影（::after 暗角 + 阴影 + 悬停辉光）/ L4 构成装饰（边框/角饰/蚀刻线/
+ * 烫金/页脚分隔）/ L5 交互态（按需出现，不设开关）。
+ * L2/L3 由 TSX 经响应系数置零；本文件只承担 L4 与 L3 阴影的隐藏规则。
+ * 分组决策：header 的表面色随 L4 关闭——它是"封脊构图"的一部分，
+ * 且不透明底色会遮住 L2 纹理顶部，构成关闭时若保留会污染归因结论。
+ */
+.pg-dim__stage {
+  /* 样品容器建立隔离层叠上下文：未来试混合模式时不外泄到页面背景 */
+  isolation: isolate;
+}
+
+.pg-dim--no-structure .au-panel,
+.pg-dim--no-structure .au-panel:hover {
+  border-color: transparent;
+}
+
+.pg-dim--no-structure .au-panel__header {
+  background-color: transparent;
+  background-image: none;
+}
+
+.pg-dim--no-structure .au-panel__header::after {
+  display: none;
+}
+
+.pg-dim--no-structure .au-panel__corner {
+  display: none;
+}
+
+.pg-dim--no-structure .au-panel__footer {
+  border-top-color: transparent;
+}
+
+.pg-dim--no-lighting .au-panel,
+.pg-dim--no-lighting .au-panel:hover {
+  box-shadow: none;
+}
+
+/*
+ * 八、构成变体库（RenderLab · L4 草案，pg-frame 命名空间，验收后转正为 au 装饰 API）。
+ * 依据 design-system 维度 04：一级母题（几何装饰、档案标记、编辑排版）与线条四级规范；
+ * 颜色全部取语义 Token，不透明度取装饰分级 Token。
+ * 基座 = au-panel + plain 材质（构成先行的中性画布）。
+ * 约束：au-panel 的 ::before 与 ::after 已被纹理槽 / 光影槽占用，
+ * 构成装饰一律使用真实 span 子元素（与 corners 同一模式），本文件即转正后的 DOM / class 形态样本。
+ */
+.pg-frame-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.pg-orn {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* F1 局部断开边界：边线在四角断开，断口端点带定位刻度（结构线 + 定位线） */
+.pg-frame--broken {
+  border-color: transparent;
+}
+
+.pg-orn--lines-broken {
+  inset: 0;
+  --pg-line: var(--au-color-border-subtle);
+  background:
+    linear-gradient(var(--pg-line), var(--pg-line)) 20px 0 / calc(100% - 40px) 1px no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) 20px 100% / calc(100% - 40px) 1px no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) 0 20px / 1px calc(100% - 40px) no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) 100% 20px / 1px calc(100% - 40px) no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) 20px 0 / 1px 6px no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) calc(100% - 20px) 0 / 1px 6px no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) 20px calc(100% - 6px) / 1px 6px no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) calc(100% - 20px) calc(100% - 6px) / 1px 6px no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) 0 20px / 6px 1px no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) 0 calc(100% - 20px) / 6px 1px no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) calc(100% - 6px) 20px / 6px 1px no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) calc(100% - 6px) calc(100% - 20px) / 6px 1px no-repeat;
+}
+
+/* F2 不完整矩形轮廓：对角完整 L + 对角短刻度暗示轮廓（编辑式留白） */
+.pg-frame--open {
+  border-color: transparent;
+}
+
+.pg-orn--lines-open {
+  inset: 0;
+  --pg-line: var(--au-color-border-subtle);
+  background:
+    linear-gradient(var(--pg-line), var(--pg-line)) 0 0 / 64px 1px no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) 0 0 / 1px 64px no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) 100% 100% / 64px 1px no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) 100% 100% / 1px 64px no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) 100% 0 / 18px 1px no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) 100% 0 / 1px 18px no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) 0 100% / 18px 1px no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) 0 100% / 1px 18px no-repeat;
+}
+
+/* F3 细线 + 边缘符号：保留发丝线框，四边中点内侧贴金属色菱形 */
+.pg-orn--sym {
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--au-color-border-metal);
+  background-color: var(--au-material-base, var(--au-color-bg-elevated));
+  transform: rotate(45deg);
+}
+
+.pg-orn--sym-t { top: 0; left: calc(50% - 4px); }
+.pg-orn--sym-b { bottom: 0; left: calc(50% - 4px); }
+.pg-orn--sym-l { left: 0; top: calc(50% - 4px); }
+.pg-orn--sym-r { right: 0; top: calc(50% - 4px); }
+
+/* F4 文字融入边框：上边线在编号牌位断开，牌内嵌编号（档案标记母题，numeric 字体） */
+.pg-frame--caption {
+  border-top-color: transparent;
+}
+
+.pg-orn--caption-lines {
+  inset: 0;
+  --pg-line: var(--au-color-border-subtle);
+  background:
+    linear-gradient(var(--pg-line), var(--pg-line)) 0 0 / 20px 1px no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) 140px 0 / calc(100% - 140px) 1px no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) 20px 0 / 1px 6px no-repeat,
+    linear-gradient(var(--pg-line), var(--pg-line)) 140px 0 / 1px 6px no-repeat;
+}
+
+.pg-orn--caption {
+  top: 0;
+  left: 26px;
+  padding: 3px 10px 2px;
+  background-color: var(--au-material-base, var(--au-color-bg-elevated));
+  font-family: var(--au-font-family-numeric);
+  font-size: var(--au-font-size-caption);
+  letter-spacing: var(--au-letter-spacing-label);
+  color: var(--au-color-text-secondary);
+}
+
+/* F5 纹章落款：签名作为纹章样式之一，与印章同一槽位（右下）落款 */
+.pg-orn--sig-emblem {
+  right: 14px;
+  bottom: 18px;
+  width: 96px;
+  height: 32px;
+  background-image: url('../../src/assets/textures/Signature-3157.webp');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: var(--au-ornament-opacity-normal);
+}
+
+/* 角饰设计对照（基线 + 三个草案；mask 消费随语义色着色，四角镜像翻转） */
+.pg-corner-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.pg-corn-demo {
+  position: relative;
+  height: 104px;
+  background-color: var(--au-color-bg-surface);
+  border-radius: var(--au-radius-small);
+}
+
+.pg-corn-demo__name {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  transform: translateX(-50%);
+  font-family: var(--au-font-family-ui);
+  font-size: var(--au-font-size-caption);
+  letter-spacing: var(--au-letter-spacing-label);
+  color: var(--au-color-text-secondary);
+  white-space: nowrap;
+}
+
+.pg-corn {
+  position: absolute;
+  width: var(--au-ornament-size-md);
+  height: var(--au-ornament-size-md);
+  background-color: var(--au-color-border-metal);
+  pointer-events: none;
+}
+
+.pg-corn--base {
+  -webkit-mask: url('../../src/assets/ornaments/corner.svg') center / contain no-repeat;
+  mask: url('../../src/assets/ornaments/corner.svg') center / contain no-repeat;
+}
+
+.pg-corn--notched {
+  -webkit-mask: url('../../src/assets/ornaments/draft-corner-notched.svg') center / contain no-repeat;
+  mask: url('../../src/assets/ornaments/draft-corner-notched.svg') center / contain no-repeat;
+}
+
+.pg-corn--arc {
+  -webkit-mask: url('../../src/assets/ornaments/draft-corner-arc.svg') center / contain no-repeat;
+  mask: url('../../src/assets/ornaments/draft-corner-arc.svg') center / contain no-repeat;
+}
+
+.pg-corn--registration {
+  -webkit-mask: url('../../src/assets/ornaments/draft-corner-registration.svg') center / contain no-repeat;
+  mask: url('../../src/assets/ornaments/draft-corner-registration.svg') center / contain no-repeat;
+}
+
+.pg-corn--tl { top: 6px; left: 6px; }
+.pg-corn--tr { top: 6px; right: 6px; transform: scaleX(-1); }
+.pg-corn--bl { bottom: 6px; left: 6px; transform: scaleY(-1); }
+.pg-corn--br { bottom: 6px; right: 6px; transform: scale(-1); }
+
+/* 分隔线对照（基线 + 四个草案；装饰线允许金属 / 强调色，参考维度 04 线条节奏） */
+.pg-divider-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.pg-divider-demo {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 14px;
+  align-items: center;
+}
+
+.pg-divider-demo__name {
+  font-family: var(--au-font-family-ui);
+  font-size: var(--au-font-size-caption);
+  letter-spacing: var(--au-letter-spacing-label);
+  color: var(--au-color-text-secondary);
+}
+
+.pg-divider {
+  display: block;
+  pointer-events: none;
+}
+
+.pg-divider--etch {
+  height: 1px;
+  background-image: var(--au-gradient-etch-line);
+}
+
+.pg-divider--double {
+  height: 4px;
+  background:
+    linear-gradient(var(--au-color-border-subtle), var(--au-color-border-subtle)) 0 0 / 100% 1px no-repeat,
+    linear-gradient(var(--au-color-border-metal), var(--au-color-border-metal)) 0 100% / 100% 1px no-repeat;
+}
+
+.pg-divider--dotted {
+  height: 1px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--au-color-border-subtle) 0 3px,
+    transparent 3px 9px
+  );
+  opacity: 0.8;
+}
+
+.pg-divider--asymmetric {
+  height: 4px;
+  background:
+    linear-gradient(var(--au-color-border-subtle), var(--au-color-border-subtle)) 0 0 / 100% 1px no-repeat,
+    linear-gradient(var(--au-color-border-metal), var(--au-color-border-metal)) right 3px top 3px / 64px 1px no-repeat;
+}
+
+/* 印章尺寸 / 不透明度分级对照 */
+.pg-seal-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.pg-seal-chip {
+  width: 96px;
+  height: 96px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background-color: var(--au-color-bg-surface);
+  border-radius: var(--au-radius-small);
+}
+
+.pg-seal {
+  display: block;
+  background-color: var(--au-color-accent-primary);
+  transform: rotate(-8deg);
+  -webkit-mask: url('../../src/assets/ornaments/draft-seal-ring.svg') center / contain no-repeat;
+  mask: url('../../src/assets/ornaments/draft-seal-ring.svg') center / contain no-repeat;
+}
+
+.pg-seal--lg {
+  width: var(--au-ornament-size-lg);
+  height: var(--au-ornament-size-lg);
+  opacity: var(--au-ornament-opacity-normal);
+}
+
+.pg-seal--md {
+  width: 36px;
+  height: 36px;
+  opacity: var(--au-ornament-opacity-normal);
+}
+
+.pg-seal--sm {
+  width: var(--au-ornament-size-md);
+  height: var(--au-ornament-size-md);
+  opacity: var(--au-ornament-opacity-subtle);
 }

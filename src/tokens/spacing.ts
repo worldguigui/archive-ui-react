@@ -1,4 +1,4 @@
-/** 间距、圆角、边框宽度 Token。 */
+/** 间距、圆角、边框宽度 Token，与 src/styles/tokens/spacing.css 对应。 */
 export const spacing = {
   space: {
     xs: '0.25rem',
@@ -13,8 +13,9 @@ export const spacing = {
     large: '8px',
   },
   borderWidth: {
-    thin: '1px',
-    medium: '2px',
+    hairline: '1px',
+    normal: '1px',
+    emphasis: '2px',
   },
 } as const;
 

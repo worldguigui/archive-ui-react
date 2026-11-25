@@ -1,0 +1,27 @@
+/*
+ * film 材质：底片（强度等级 3，展示型卡片用）。
+ * 纹理 = 真实底片乳剂亮度图（不透明灰度 WebP，随主题成对：暗版 / 亮版反转图），
+ * 须配 multiply 混合：黑场压为暗部、划痕透出底色，形成"底色场 + 对比划痕"。
+ * 亮部/暗部宏观层次归 L3 光影槽（lens 暗角），纹理资产本身不带烘焙暗角。
+ * 与 paper 的肉眼区别锚点：冷调底 + 真实划痕尘点 vs 暖调纸 + 纤维斑驳。
+ *
+ * 预设组合说明：lens 暗角是本材质的默认组合，但每个维度都是独立的
+ * custom property，可被调用方单独覆盖，不构成硬绑定。
+ */
+.au-material--film {
+  --au-material-base: var(--au-material-film-base);
+  --au-texture-grain-opacity: calc(
+    var(--au-texture-film-grain-opacity) * var(--au-texture-scale)
+  );
+  --au-material-grain-image: var(--au-texture-film-grain-image);
+  /* 不透明亮度图的必要混合：普通半透明叠加会以贴图方式盖死底色 */
+  --au-material-grain-blend: multiply;
+  /* 整幅亮度图：cover 单幅 + 居中锚定 + 禁平铺（裁切边缘处划痕断开，不可无缝） */
+  --au-material-grain-size: cover;
+  --au-material-grain-position: center;
+  --au-material-grain-repeat: no-repeat;
+  --au-material-vignette-image: var(--au-gradient-vignette-lens);
+  --au-material-vignette-opacity: calc(
+    var(--au-material-film-vignette-opacity) * var(--au-lighting-scale)
+  );
+}
