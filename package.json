@@ -1,6 +1,6 @@
 {
   "name": "archive-ui-react",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "复古档案、古典出版物与神秘学风格的 React UI 组件库",
   "type": "module",
   "license": "MIT",

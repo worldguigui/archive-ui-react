@@ -69,6 +69,10 @@ archive-ui-react/
 
 ## 版本变更
 
+### v0.2.1 2026-11-25 组件开发文档
+
+1. 文档待审阅
+
 ### v0.2.0 设计语言 V0.1（ARCHIVE UI）· 视觉基线冻结
 
 1. 确立设计语言「ARCHIVE UI · Retro-Futurist Editorial」，九维度设计规范见 docs/design-system.md。
